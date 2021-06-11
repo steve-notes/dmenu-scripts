@@ -1,9 +1,9 @@
 #!/bin/bash
-# File              : tv.sh
+# File              : tv
 # License           : MIT
 # Author            : Steven Agustinus <steven87.ags@gmail.com>
 # Date              : 11.06.2021
-# Last Modified Date: 11.06.2021
+# Last Modified Date: 12.06.2021
 # Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
 # tv.sh
 # Copyright (c) 2021 Steven Agustinus <steven87.ags@gmail.com>
@@ -30,6 +30,8 @@
 PLAYER="mpv"
 
 declare -a options=(
+"ANIMAX         ==>    http://210.210.155.35/session/83bc2526-da69-11e8-881b-c81f66f89318/dr9445/h/h144/01.m3u8"
+"ANIPLUS        ==>    http://210.210.155.35/dr9445/h/h02/01.m3u8"
 "BERITASATU     ==>    http://edge.linknetott.swiftserve.com/live/BsNew/amlst:beritasatunewsbs/chunklist_b846000.m3u8"
 "MNC            ==>    https://vcdn2.rctiplus.id/live/eds/mnctv_fta/live_fta/mnctv_fta.m3u8"
 "TRANS7         ==>    https://video.detik.com/trans7/smil:trans7.smil/playlist.m3u8"
@@ -50,6 +52,7 @@ CHANNELNAME=$(printf '%s\n' "${options[@]}"  |  awk '{print $1}'| dmenu -l 20 -c
 SELECTED=$(printf '%s\n' "${options[@]}" | grep -i "$CHANNELNAME" |  awk '{print $NF}')
 NOTIF="dunstify -t 2000 s-TV \n$CHANNELNAME"
 
-$NOTIF & $PLAYER "$SELECTED" 
- 
+$NOTIF & killall $PLAYER 
+$PLAYER "$SELECTED" 
+
 
