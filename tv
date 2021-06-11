@@ -1,0 +1,55 @@
+#!/bin/bash
+# File              : tv.sh
+# License           : MIT
+# Author            : Steven Agustinus <steven87.ags@gmail.com>
+# Date              : 11.06.2021
+# Last Modified Date: 11.06.2021
+# Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
+# tv.sh
+# Copyright (c) 2021 Steven Agustinus <steven87.ags@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+
+PLAYER="mpv"
+
+declare -a options=(
+"BERITASATU     ==>    http://edge.linknetott.swiftserve.com/live/BsNew/amlst:beritasatunewsbs/chunklist_b846000.m3u8"
+"MNC            ==>    https://vcdn2.rctiplus.id/live/eds/mnctv_fta/live_fta/mnctv_fta.m3u8"
+"TRANS7         ==>    https://video.detik.com/trans7/smil:trans7.smil/playlist.m3u8"
+"TRANS-TV       ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_733_720p/index.m3u8"
+"NET-TV         ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_875_720p/index.m3u8"
+"CNN-INDONESIA  ==>    https://live.cnnindonesia.com/livecnn/smil:cnntv.smil/playlist.m3u8"
+"RCTI           ==>    https://vcdn2.rctiplus.id/live/eds/rcti_fta/live_fta/rcti_fta.m3u8"
+"METROTV-NEWS   ==>    http://edge.metrotvnews.com:1935/live-edge/smil:metro.smil/playlist.m3u8"
+"KOMPAS-TV      ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_874_720p/index.m3u8"    
+"SCTV           ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_204_720p/index.m3u8"
+"INDOSIAR       ==>    https://iptvcat.com/my_list/s/3726fa2ed03f6eee3366b7d425b90b45.m3u8"
+"GTV            ==>    https://vcdn2.rctiplus.id/live/eds/gtv_fta/live_fta/gtv_fta-avc1_1537200=6-mp4a_64000_eng=2.m3u8"
+"ATV            ==>    http://stream1.ninmedia.tv:1935/atv/udp.stream/chunklist_w465987392.m3u8"
+)
+
+
+CHANNELNAME=$(printf '%s\n' "${options[@]}"  |  awk '{print $1}'| dmenu -l 20 -c -bw 2 -i -p "TV: " ) || exit 
+SELECTED=$(printf '%s\n' "${options[@]}" | grep -i "$CHANNELNAME" |  awk '{print $NF}')
+NOTIF="dunstify -t 2000 s-TV \n$CHANNELNAME"
+
+$NOTIF & $PLAYER "$SELECTED" 
+ 
+
