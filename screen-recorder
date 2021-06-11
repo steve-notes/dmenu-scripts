@@ -1,5 +1,5 @@
 #!/bin/bash
-# File              : record.sh
+# File              : screen-recorder
 # License           : MIT
 # Author            : Steven Agustinus <steven87.ags@gmail.com>
 # Date              : 11.06.2021
@@ -40,12 +40,14 @@ NOTIF="dunstify -t 2000 Screen-Recording \n$OPTIONS"
 
 function S1(){
 $NOTIF 
-ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -c:v libx264rgb -crf 0 -preset veryfast "${SAVE}/${NAME}"
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 "${SAVE}/${NAME}"
+#ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -c:v libx264rgb -crf 0 -preset veryfast "${SAVE}/${NAME}"
 }
 
 function S2(){
 $NOTIF
-ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -c:v libx264rgb -crf 0 -preset veryfast "${NAME}"
+ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 "${SAVE}/${NAME}"
+#ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -c:v libx264rgb -crf 0 -preset veryfast "${NAME}"
 }
 
 
