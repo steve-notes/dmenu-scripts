@@ -55,5 +55,5 @@ NOTIF="dunstify -t 2000 s-TV \n$CHANNELNAME"
 
 
 $NOTIF & killall $PLAYER 
-$PLAYER "$SELECTED" 
+$PLAYER $SELECTED 
 
