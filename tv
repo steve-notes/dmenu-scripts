@@ -3,7 +3,7 @@
 # License           : MIT
 # Author            : Steven Agustinus <steven87.ags@gmail.com>
 # Date              : 11.06.2021
-# Last Modified Date: 15.06.2021
+# Last Modified Date: 19.06.2021
 # Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
 # tv.sh
 # Copyright (c) 2021 Steven Agustinus <steven87.ags@gmail.com>
@@ -35,10 +35,10 @@ declare -a options=(
 "BERITASATU     ==>    http://edge.linknetott.swiftserve.com/live/BsNew/amlst:beritasatunewsbs/chunklist_b846000.m3u8"
 "MNC            ==>    https://iptv-nublltsls-mwafa.vercel.app/api/vidio?id=870"
 "TRANS7         ==>    https://video.detik.com/trans7/smil:trans7.smil/playlist.m3u8"
-"TRANS-TV       ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_733_720p/index.m3u8"
+"TRANS-TV       ==>    https://video.detik.com/transtv/smil:transtv.smil/playlist.m3u8"
 "NET-TV         ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_875_720p/index.m3u8"
 "CNN-INDONESIA  ==>    https://live.cnnindonesia.com/livecnn/smil:cnntv.smil/playlist.m3u8"
-"RCTI           ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_665_720p/index.m3u8"
+"RCTI           ==>    https://live.unregister.xyz/live/eds/rcti_fta/live_fta/rcti_fta.m3u8"
 "METROTV-NEWS   ==>    http://edge.metrotvnews.com:1935/live-edge/smil:metro.smil/playlist.m3u8"
 "KOMPAS-TV      ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_874_720p/index.m3u8"    
 "SCTV           ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_204_720p/index.m3u8"
