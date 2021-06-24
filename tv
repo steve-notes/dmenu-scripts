@@ -3,7 +3,7 @@
 # License           : MIT
 # Author            : Steven Agustinus <steven87.ags@gmail.com>
 # Date              : 11.06.2021
-# Last Modified Date: 19.06.2021
+# Last Modified Date: 20.06.2021
 # Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
 # tv.sh
 # Copyright (c) 2021 Steven Agustinus <steven87.ags@gmail.com>
@@ -46,11 +46,10 @@ declare -a options=(
 "GTV            ==>    https://vcdn2.rctiplus.id/live/eds/gtv_fta/live_fta/gtv_fta-avc1_1537200=6-mp4a_64000_eng=2.m3u8"
 "ANTV           ==>    http://210.210.155.35/qwr9ew/s/s07/02.m3u8"
 "ATV            ==>    http://stream1.ninmedia.tv:1935/atv/udp.stream/chunklist_w465987392.m3u8"
-"O-CHANNEL      ==>    https://livestreaming-google-etslive.vidio.com/hls-p/ingest_206_720p/index.m3u8"
+"O-CHANNEL      ==>    https://query-streamlink.lanesh4d0w.repl.co/iptv-query?streaming-ip=https://www.vidio.com/live/206-ochannel"
 )
 
-
-CHANNELNAME=$(printf '%s\n' "${options[@]}"  |  awk '{print $1}'| dmenu -l 20 -c -bw 2 -i -p "TV: " ) || exit 
+CHANNELNAME=$(printf '%s\n' "${options[@]}"  |  awk '{print $1}'| dmenu -l 20 -c -bw 2 -i -p "📺 TV: " ) || exit 
 SELECTED=$(printf '%s\n' "${options[@]}" | grep -i "$CHANNELNAME" |  awk '{print $NF}')
 NOTIF="dunstify -t 2000 s-TV \n$CHANNELNAME"
 
