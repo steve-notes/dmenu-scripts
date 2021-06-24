@@ -3,7 +3,7 @@
 # License           : MIT
 # Author            : Steven Agustinus <steven87.ags@gmail.com>
 # Date              : 15.06.2021
-# Last Modified Date: 15.06.2021
+# Last Modified Date: 20.06.2021
 # Last Modified By  : Steven Agustinus <steven87.ags@gmail.com>
 # edit-config
 # Copyright (c) 2021 Steven Agustinus <steven87.ags@gmail.com>
@@ -43,11 +43,12 @@ declare -a CFGS=(
 "DUNST       ==>     $C/dunst/dunstrc"
 "CONKY       ==>     $C/conky/conky.conf"
 "ZSH         ==>     $H/.zshrc"
+"PICOM       ==>     $C/picom/picom.conf"
 )
 
 
 
-LCFGS=$(printf '%s\n' "${CFGS[@]}" | awk '{print $1}' | dmenu -l 20 -c -bw 2 -i -p "Edit Config: ") || exit
+LCFGS=$(printf '%s\n' "${CFGS[@]}" | awk '{print $1}' | dmenu -l 20 -c -bw 2 -i -p "📝 CONFIG :") || exit
 SCFGS=$(printf '%s\n' "${CFGS[@]}" | grep -i "$LCFGS" | awk '{print $NF}')
 
 
