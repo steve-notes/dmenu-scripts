@@ -27,26 +27,28 @@
 # SOFTWARE.
 
 NAME=$(printf '%s' 'Screen-record-'"$(date +'%d-%m-%y:%H:%M:%S').mp4")
-SAVE="$HOME/Downloads/Compressed/test"
+SAVE="$HOME/screen-records"
 
 declare -a ACTIONS=(
-"SCREEN-1" 
-"SCREEN-2" 
-"STOP"
+"🖥 SCREEN-1" 
+"🖥 SCREEN-2" 
+"❌ STOP"
 )
 
-OPTIONS=$(printf '%s\n' "${ACTIONS[@]}"  |  awk '{print $1}'| dmenu -l 4 -c -bw 2 -i -p "RECORD : " ) || exit 
-NOTIF="dunstify -t 2000 Screen-Recording \n$OPTIONS"
+OPTIONS=$(printf '%s\n' "${ACTIONS[@]}"  |  awk '{print $1 " " $2}'| dmenu -l 4 -c -bw 2 -i -p "RECORD : " ) || exit 
+#NOTIF="dunstify -t 2000 Screen-Recording \n$OPTIONS"
 LATEST=$(ls -t "$SAVE" | head -n 1)
 
 function S1(){
-$NOTIF 
+#$NOTIF
+dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
 ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -preset veryfast "${SAVE}/${NAME}"
 #ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -c:v libx264rgb -crf 0 -preset veryfast "${SAVE}/${NAME}"
 }
 
 function S2(){
-$NOTIF
+#$NOTIF
+dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
 ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -preset veryfast "${SAVE}/${NAME}" \
 #ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -c:v libx264rgb -crf 0 -preset veryfast "${NAME}"
 }
@@ -56,12 +58,12 @@ function S3() {
 ffmpeg -y -i "${SAVE}/${LATEST}" -f lavfi -i anullsrc -c:v copy -c:a aac -shortest "${SAVE}/${NAME}" 
 }
 
-if [[ "$OPTIONS" == 'SCREEN-1' ]] ; then
+if [[ "$OPTIONS" == '🖥 SCREEN-1' ]] ; then
     S1
-elif [[ "$OPTIONS" == 'SCREEN-2' ]] ; then
+elif [[ "$OPTIONS" == '🖥 SCREEN-2' ]] ; then
     S2
-elif [[ "$OPTIONS" == 'STOP' ]] ; then
-    $NOTIF
+elif [[ "$OPTIONS" == '❌ STOP' ]] ; then
+    dunstify -t 2000 "❌ Stop Recording"   
     killall ffmpeg 
     sleep 1
     S3 
