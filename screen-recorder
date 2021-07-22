@@ -30,52 +30,88 @@ NAME=$(printf '%s' 'Screen-record-'"$(date +'%d-%m-%y:%H:%M:%S').mp4")
 SAVE="$HOME/screen-records"
 
 declare -a ACTIONS=(
-"🖥 SCREEN-1" 
-"🖥 SCREEN-2" 
-"❌ STOP"
+"🖥 SCREEN-1 - VIDEO_ONLY 🔇" 
+"🖥 SCREEN-2 - VIDEO_ONLY 🔇" 
+"🖥 SCREEN-1 - WITH AUDIO 🔊" 
+"🖥 SCREEN-2 - WITH AUDIO 🔊" 
+"❌ STOP RECORDING"
 )
 
-OPTIONS=$(printf '%s\n' "${ACTIONS[@]}"  |  awk '{print $1 " " $2}'| dmenu -l 4 -c -bw 2 -i -p "RECORD : " ) || exit 
-#NOTIF="dunstify -t 2000 Screen-Recording \n$OPTIONS"
+OPTIONS=$(printf '%s\n' "${ACTIONS[@]}"  |  dmenu -l 5 -c -bw 2 -i -p "🎬 RECORD : " ) || exit 
+NOTIF="dunstify -t 2000 Screen-Recording "
 LATEST=$(ls -t "$SAVE" | head -n 1)
 
+#RECORD SCREEN-1 VIDEO ONLY
 function S1(){
-#$NOTIF
-dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
-ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -preset veryfast "${SAVE}/${NAME}"
+$NOTIF "\n${ACTIONS[0]}"
+#dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
+##whithout anullsrc audio filter / without Inject Null Audio
+#ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}" \
+
+# With Anullsrc Audio Filter
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 \
+    -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -c:a aac \
+    -shortest -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
+# Lossless Record
 #ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -c:v libx264rgb -crf 0 -preset veryfast "${SAVE}/${NAME}"
 }
 
+#RECORD SCREEN-2 VIDEO ONLY
 function S2(){
-#$NOTIF
+$NOTIF "\n${ACTIONS[1]}"
 dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
-ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -preset veryfast "${SAVE}/${NAME}" \
+#ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -pix_fmt yuv420p  -preset veryfast "${SAVE}/${NAME}" \
+
+# With Anullsrc Audio Filter
+ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0 \
+    -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -c:a aac \
+    -shortest -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
 #ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -c:v libx264rgb -crf 0 -preset veryfast "${NAME}"
 }
 
-# Add/Inject null audio to file video
-function S3() {
-ffmpeg -y -i "${SAVE}/${LATEST}" -f lavfi -i anullsrc -c:v copy -c:a aac -shortest "${SAVE}/${NAME}" 
+# SCREEN-1 VIDEO WITH AUDIO
+function S1AV(){
+$NOTIF "\n${ACTIONS[2]}"
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+0,0 \
+    -f alsa -ac 2 -i default -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
 }
 
-if [[ "$OPTIONS" == '🖥 SCREEN-1' ]] ; then
+# SCREEN-2 VIDEO WITH AUDIO
+function S2AV(){
+$NOTIF "\n${ACTIONS[3]}"
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+0,0 \
+    -f alsa -ac 2 -i default -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
+}
+
+# ADD/INJECT NULL AUDIO
+#function S3() {
+#ffmpeg -y -i "${SAVE}/${LATEST}" -f lavfi -i anullsrc -c:v copy  -c:a aac -shortest "${SAVE}/${NAME}" 
+#}
+
+
+if [[ "$OPTIONS" == "${ACTIONS[0]}" ]] ; then
     S1
-elif [[ "$OPTIONS" == '🖥 SCREEN-2' ]] ; then
+elif [[ "$OPTIONS" == "${ACTIONS[1]}" ]] ; then
     S2
-elif [[ "$OPTIONS" == '❌ STOP' ]] ; then
-    dunstify -t 2000 "❌ Stop Recording"   
+elif [[ "$OPTIONS" == "${ACTIONS[4]}"  ]] ; then
     killall ffmpeg 
-    sleep 1
-    S3 
+#    dunstify -t 2000 "❌ STOP RECORDING"   
+    $NOTIF "\n\n${ACTIONS[4]}"
 fi
 
-sleep 1
-#Cheking & delete original file
-    for i in "${SAVE[@]}/*" ;
-    do
-        x=($i)
-        z=${x[-2]} 
-        kill ffmpeg
-        sleep 2
-        rm $z
-    done 
+
+
+
+
+   # sleep 1
+   # S3 
+   # sleep 1
+#CHECKING & DELETE ORIGINAL FILE
+   # for i in "${SAVE[@]}/*" ;
+   # do
+   #     x=($i)
+   #     z=${x[-2]} 
+   #     kill ffmpeg
+   #     sleep 2
+   #     rm $z
+   # done 
