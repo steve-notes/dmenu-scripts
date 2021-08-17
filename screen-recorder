@@ -93,6 +93,10 @@ if [[ "$OPTIONS" == "${ACTIONS[0]}" ]] ; then
     S1
 elif [[ "$OPTIONS" == "${ACTIONS[1]}" ]] ; then
     S2
+elif [[ "$OPTIONS" == "${ACTIONS[2]}" ]] ; then
+    S1AV
+elif [[ "$OPTIONS" == "${ACTIONS[3]}" ]] ; then
+    S2AV
 elif [[ "$OPTIONS" == "${ACTIONS[4]}"  ]] ; then
     killall ffmpeg 
 #    dunstify -t 2000 "❌ STOP RECORDING"   
