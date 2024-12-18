@@ -59,11 +59,11 @@ ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 \
 #RECORD SCREEN-2 VIDEO ONLY
 function S2(){
 $NOTIF "\n${ACTIONS[1]}"
-dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
+#dunstify -t 2000 Screen-Recording "\n🖥 SCREEN-1"  
 #ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -pix_fmt yuv420p  -preset veryfast "${SAVE}/${NAME}" \
 
 # With Anullsrc Audio Filter
-ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0 \
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+1920,0 \
     -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -c:a aac \
     -shortest -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
 #ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0+1920,0 -c:v libx264rgb -crf 0 -preset veryfast "${NAME}"
@@ -72,14 +72,14 @@ ffmpeg -video_size 1366x768 -framerate 30 -f x11grab -i :0.0 \
 # SCREEN-1 VIDEO WITH AUDIO
 function S1AV(){
 $NOTIF "\n${ACTIONS[2]}"
-ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+0,0 \
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 \
     -f alsa -ac 2 -i default -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
 }
 
 # SCREEN-2 VIDEO WITH AUDIO
 function S2AV(){
 $NOTIF "\n${ACTIONS[3]}"
-ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+0,0 \
+ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0+1920,0 \
     -f alsa -ac 2 -i default -pix_fmt yuv420p -preset veryfast "${SAVE}/${NAME}"
 }
 
